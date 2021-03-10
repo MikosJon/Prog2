@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Graf {
@@ -113,9 +114,41 @@ public class Graf {
         System.out.println();
     }
 
-    public boolean povezan() {
-        HashSet<Tocka> videne = new HashSet<Tocka>();
+    public int steviloKomponent() {
+        HashSet<String> videne = new HashSet<String>();
 
-        return tocke.size() == 0;
+        int stevilo = 0;
+
+        for (Tocka v : tocke.values()) {
+            if (videne.contains(v.ime)) continue;
+            ++stevilo;
+
+            videne.add(v.ime);
+            LinkedList<Tocka> q = new LinkedList<Tocka>(v.sosedi);
+            while (q.size() != 0) {
+                Tocka trenutna = q.remove();
+                if (videne.contains(trenutna.ime)) continue;
+                videne.add(trenutna.ime);
+                q.addAll(trenutna.sosedi);
+            }
+        }
+
+        return stevilo;
     }
+
+    public boolean povezan() {
+        return steviloKomponent() == 1;
+    }
+
+    public void razporedi(double x, double y, double r) {
+        int n = tocke.size();
+        int i = 0;
+        for (Tocka v : tocke.values()) {
+            v.x = x + r * Math.cos(2 * i * Math.PI / n);
+            v.y = y + r * Math.sin(2 * i * Math.PI / n);
+            ++i;
+        }
+    }
+
+
 }
