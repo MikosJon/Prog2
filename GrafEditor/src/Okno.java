@@ -1,6 +1,5 @@
 import javax.swing.*;
 
-@SuppressWarnings("serial")
 public class Okno extends JFrame {
 
     protected Platno platno;
