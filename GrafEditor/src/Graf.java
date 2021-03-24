@@ -183,42 +183,29 @@ public class Graf {
         try {
             BufferedReader vhod = new BufferedReader(new FileReader(ime));
 
-            boolean tocke = true;
+            boolean beremoTocke = true;
 
             while (vhod.ready()) {
                 String vrstica = vhod.readLine().trim();
-                System.out.println(vrstica);
                 if (vrstica.equals("")) continue;
+                if (vrstica.equals("***")) {
+                    beremoTocke = false;
+                    continue;
+                }
+                String[] razcljenjenaVrstica = vrstica.split(" ");
+                String temp = razcljenjenaVrstica[0];
+                String tockaIme = temp.substring(0, temp.length() - 1);
 
-                if (tocke) {
-                    if (vrstica.equals("***")) {
-                        tocke = false;
-                        continue;
-                    }
-                    String[] razcljenjenaVrstica = vrstica.split(" ");
-                    String temp = razcljenjenaVrstica[0];
-                    String tockaIme;
-                    if (temp.length() == 0) {
-                        tockaIme = temp;
-                    } else {
-                        tockaIme = temp.substring(0, temp.length() - 1);
-                    }
-
+                if (beremoTocke) {
                     Tocka v = g.dodajTocko(tockaIme);
                     v.x = Double.parseDouble(razcljenjenaVrstica[1]);
                     v.y = Double.parseDouble(razcljenjenaVrstica[2]);
                 }
                 else {
-                    String[] razcljenjenaVrstica = vrstica.split(" ");
-                    String temp = razcljenjenaVrstica[0];
-                    String tockaIme = temp.substring(0, temp.length() - 1);
-
                     Tocka zacetnaTocka = g.tocke.get(tockaIme);
-
                     for (int i = 1; i < razcljenjenaVrstica.length; ++i) {
                         String trenutnoIme = razcljenjenaVrstica[i];
                         Tocka trenutnaTocka = g.tocke.get(trenutnoIme);
-
                         g.dodajPovezavo(zacetnaTocka, trenutnaTocka);
                     }
                 }
