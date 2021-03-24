@@ -98,6 +98,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
+        if (graf == null) return;
         int x = starX = klikX = mouseEvent.getX();
         int y = starY = klikY = mouseEvent.getY();
 
@@ -122,6 +123,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
+        if (graf == null) return;
         int trenutniX = mouseEvent.getX();
         int trenutniY = mouseEvent.getY();
 
@@ -147,6 +149,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
+        if (graf == null) return;
         int trenutniX = mouseEvent.getX();
         int trenutniY = mouseEvent.getY();
 
@@ -171,28 +174,29 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
+        if (graf == null) return;
         char tipka = keyEvent.getKeyChar();
         if (tipka == 'a') {
             izbraneTocke.addAll(graf.tocke.values());
         }
-        else if (tipka == 'b') {
+        else if (tipka == 's') {
             izbraneTocke.clear();
         }
-        else if (tipka == 'c') {
+        else if (tipka == 'z') {
             for (Tocka v : izbraneTocke) {
                 for (Tocka u : izbraneTocke) {
                     graf.dodajPovezavo(v, u);
                 }
             }
         }
-        else if (tipka == 'd') {
+        else if (tipka == 'p') {
             for (Tocka v : izbraneTocke) {
                 for (Tocka u : izbraneTocke) {
                     graf.odstraniPovezavo(v, u);
                 }
             }
         }
-        else if (tipka == 'e') {
+        else if (tipka == 't') {
             for (Tocka v : izbraneTocke) {
                 graf.odstraniTocko(v);
             }

@@ -1,6 +1,8 @@
+import java.io.IOException;
+
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Graf g = Graf.polnDvodelen(5, 3);
         g.razporedi(400, 400, 300); // hardcoded vrednosti, ker je okno 800x800
 

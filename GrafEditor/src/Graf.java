@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -148,6 +152,82 @@ public class Graf {
             v.y = y + r * Math.sin(2 * i * Math.PI / n);
             ++i;
         }
+    }
+
+    public void shrani(String ime){
+        try {
+            PrintWriter izhod = new PrintWriter(new FileWriter(ime));
+
+            for (Tocka v : tocke.values()) {
+                String out = v.ime + ": " + String.format("%.2f", v.x) + " " + String.format("%.2f", v.y);
+                izhod.println(out);
+            }
+            izhod.println("***");
+
+            for (Tocka v : tocke.values()) {
+                String out = v.ime + ":";
+                for (Tocka u : v.sosedi) {
+                    out += " " + u.ime;
+                }
+                izhod.println(out);
+            }
+            izhod.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Graf preberi(String ime) {
+        Graf g = new Graf();
+        try {
+            BufferedReader vhod = new BufferedReader(new FileReader(ime));
+
+            boolean tocke = true;
+
+            while (vhod.ready()) {
+                String vrstica = vhod.readLine().trim();
+                System.out.println(vrstica);
+                if (vrstica.equals("")) continue;
+
+                if (tocke) {
+                    if (vrstica.equals("***")) {
+                        tocke = false;
+                        continue;
+                    }
+                    String[] razcljenjenaVrstica = vrstica.split(" ");
+                    String temp = razcljenjenaVrstica[0];
+                    String tockaIme;
+                    if (temp.length() == 0) {
+                        tockaIme = temp;
+                    } else {
+                        tockaIme = temp.substring(0, temp.length() - 1);
+                    }
+
+                    Tocka v = g.dodajTocko(tockaIme);
+                    v.x = Double.parseDouble(razcljenjenaVrstica[1]);
+                    v.y = Double.parseDouble(razcljenjenaVrstica[2]);
+                }
+                else {
+                    String[] razcljenjenaVrstica = vrstica.split(" ");
+                    String temp = razcljenjenaVrstica[0];
+                    String tockaIme = temp.substring(0, temp.length() - 1);
+
+                    Tocka zacetnaTocka = g.tocke.get(tockaIme);
+
+                    for (int i = 1; i < razcljenjenaVrstica.length; ++i) {
+                        String trenutnoIme = razcljenjenaVrstica[i];
+                        Tocka trenutnaTocka = g.tocke.get(trenutnoIme);
+
+                        g.dodajPovezavo(zacetnaTocka, trenutnaTocka);
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return g;
     }
 
 
